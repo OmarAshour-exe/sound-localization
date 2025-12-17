@@ -106,4 +106,3 @@ Developed as part of the **Neuromorphic Intelligence** course at **Technische Ho
 
 This project is for **educational and research purposes**.  
 Feel free to fork or adapt it with credit to the original authors.
-```
