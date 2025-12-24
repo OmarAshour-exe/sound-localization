@@ -28,15 +28,57 @@ The system demonstrates how **neuromorphic architectures** can process sensory s
 
 ---
 
+## Design Choices
+
+### Why ILD instead of ITD?
+
+**Hardware Synchronization Constraints:**  
+ITD relies on microsecond-level timing differences between signals arriving at the two ears. Our setup uses two independent devices (MacBook and iPhone) connected via software. The latency and clock synchronization between these distinct devices are not stable enough to reliably measure the tiny phase differences required for ITD.
+
+In contrast, **ILD (Interaural Level Difference)** measures relative loudness. It is robust against small timing jitters and latency variations, making it far more reliable for a distributed microphone array while still effectively demonstrating neuromorphic processing principles.
+
+---
+
 ## ⚙️ Architecture
 
-to be added... 
+The system is designed as a pipeline that converts raw audio into spiking activity and finally into a direction estimate.
 
-A simplified diagram:
+1.  **Audio Input Layer (Preprocessing):**
+    - Captures live audio streams from two devices (e.g., Mac and iPhone).
+    - Normalizes the gain of each microphone to account for hardware differences.
+    - Computes the **Interaural Level Difference (ILD)** in decibels (dB) for each 16ms audio frame.
+
+2.  **Spiking Encoding Layer (`ild_snn`):**
+    - The continuous ILD value is fed into a population of **Leaky Integrate-and-Fire (LIF)** neurons.
+    - These neurons encode the scalar ILD value into a temporal pattern of spikes, similar to how the auditory nerve encodes sound intensity.
+
+3.  **On/Off Neuron Processing (`on_neurons` & `off_neurons`):**
+    - The signal splits into two specialized populations:
+        - **On-neurons:** Respond primarily when the signal shifts towards the Mac side (positive ILD).
+        - **Off-neurons:** Respond primarily when the signal shifts towards the iPhone side (negative ILD).
+    - This mimics biological "On" and "Off" channels in the auditory pathway, increasing robustness and dynamic range.
+
+4.  **Angle Decoding Layer (`angle_snn`):**
+    - A final population of neurons receives spike input from both On and Off populations.
+    - It integrates these signals to decode a stable estimate of the sound source angle.
+
+5.  **Output Visualization:**
+    - The decoded angle is mapped to degrees (-90° to +90°) and visualized as a compass needle in real-time.
+
+**Simplified Data Flow:**
 
 ```
-[ Mic 1 ]     [ Mic 2 ]
-     ↓            ↓
+[ Mic 1 (Mac) ] [ Mic 2 (iPhone) ]
+       ↓                ↓
+[ Feature Extraction (Compute ILD) ]
+               ↓
+[ Spiking Encoder Layer (LIF Neurons) ]
+         ↙          ↘
+[ On-Neurons ] [ Off-Neurons ]
+         ↘          ↙
+[ Angle Decoder Layer (Integration) ]
+               ↓
+[ Final Direction Estimate (Degrees) ]
 ```
 
 ---
@@ -67,29 +109,28 @@ pip install -r requirements.txt
 ```
 python main.py
 ```
+*Note: This starts the audio stream and opens the Nengo GUI for visualization.*
 
 ### 4. Connect external devices
-Connect iPhone or iPad as additional microphones via AirPlay, Bluetooth, or wired input for spatial recording tests.
+Ensure your iPhone/iPad is connected as an audio input device (e.g., via Audio MIDI Setup on macOS) before running the script.
 
 ---
 
 ## 📊 Results
 
-- Plots display spike activity and estimated sound angles.  
-- Model performance is evaluated by comparing predicted vs. true source locations.  
-- Demonstrates feasibility of low-power, biologically plausible auditory localization.
+- **Real-time Spike Rasters:** Visualizes the firing patterns of On and Off neurons as they respond to sound direction.
+- **Compass Plot:** A live XY-plot shows the estimated direction of the sound source relative to the microphones.
+- **Robustness:** The SNN successfully tracks a moving speaker even with background noise, demonstrating the stability of the rate-coding approach.
 
 ---
 
 ## 📁 Project Structure
 
 ```
-├── main.py                # Entry point for the Nengo model
-├── localization_model.py  # SNN architecture and simulation setup
-├── audio_input.py         # Microphone synchronization and recording
-├── utils/                 # Signal processing helper functions
-├── data/                  # Sample recordings and testing data
-└── README.md
+├── main.py             # Entry point: Nengo model, SNN definition, and GUI setup
+├── audio_input.py      # Handles live audio streaming and queue management
+├── README.md           # Project documentation
+└── requirements.txt    # Python dependencies
 ```
 
 ---
