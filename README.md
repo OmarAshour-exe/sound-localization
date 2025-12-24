@@ -107,7 +107,7 @@ pip install -r requirements.txt
 
 ### 3. Run the Nengo model
 ```
-python main.py
+nengo main.py
 ```
 *Note: This starts the audio stream and opens the Nengo GUI for visualization.*
 
