@@ -116,6 +116,11 @@ Ensure your iPhone/iPad is connected as an audio input device (e.g., via Audio M
 
 ---
 
+## To-Do
+Add something about analyze_offile and live_detection.
+
+---
+
 ## 📊 Results
 
 - **Real-time Spike Rasters:** Visualizes the firing patterns of On and Off neurons as they respond to sound direction.

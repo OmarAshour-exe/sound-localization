@@ -1,6 +1,7 @@
+pyqtgraph
 nengo>=4.0
 nengo-gui>=0.4
 numpy>=1.24
 matplotlib>=3.7
 sounddevice>=0.4
-scipy>=1.10
+PyQt5

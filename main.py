@@ -44,6 +44,8 @@ ENERGY_THRESHOLD = 1e-5
 # Store the last valid ILD value so we can return it if no new audio arrives.
 last_feat = np.array([0.0])
 
+DEVICE_INDEX = 5
+
 # ============================================================================
 # FEATURE EXTRACTION FUNCTION
 # ============================================================================
@@ -332,3 +334,22 @@ with model:
 # START THE AUDIO STREAM
 # ============================================================================
 # Begin recording from the microphones immediately so audio is available
+# as soon as the simulation starts.
+
+stream = start_stream(device=5, channels=2)
+print(f"Spiking Neural Network Model Started")
+print(f"Sample Rate: {SAMPLE_RATE} Hz")
+print(f"Timestep (DT): {DT:.4f} seconds")
+print(f"In Nengo GUI:")
+print(f"  - Right-click 'ILD_SpikeLayer' → Spikes (watch neurons fire!)")
+print(f"  - Right-click 'Angle_Compass' → XY value (watch the compass)")
+print(f"  - Right-click 'Angle_Output_deg' → Value (watch the angle)")
+
+# ============================================================================
+# OPTIONAL: STANDALONE TEST (WITHOUT NENGO GUI)
+# ============================================================================
+# If you run this file directly (not via nengo command), it will run the analyze_offline file and simulate for 10 seconds.
+
+if __name__ == "__main__":
+    # Import and run the offline analysis
+    from analyze_offline import *
