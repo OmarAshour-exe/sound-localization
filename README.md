@@ -10,6 +10,8 @@ In biological audition, when a sound reaches one ear a bit earlier than the othe
 
 ![Auditory Spatial Mapping](https://github.com/OmarAshour-exe/sound-localization/blob/master/assets/Auditory_Spatial_Mapping.png)
 
+Another reliable cue is Interaural Level Difference (ILD): the ear closer to a sound usually receives a stronger (louder) signal because the head attenuates sound on the far side. By comparing the relative energy between the two channels, the system can infer direction even when microsecond timing differences are unreliable.
+
 The sound itself is turned into short “on” and “off” spikes: one group of neurons fires when the sound level goes up, another when it goes down. By adding up these spikes with simple filters, the brain—or a neuromorphic model—can reconstruct a smooth version of the original signal, while still enjoying the robustness and efficiency of spike-based processing.
 
 ![On And Off spikes](https://github.com/OmarAshour-exe/sound-localization/blob/master/assets/On_Off_spikes.png)
@@ -116,8 +118,9 @@ Ensure your iPhone/iPad is connected as an audio input device (e.g., via Audio M
 
 ---
 
-## To-Do
-Add something about analyze_offile and live_detection.
+## Different methods to analyze an audio
+- Offline analysis (analyze_offline.py): Records a fixed-duration stereo clip, computes ILD/angle per block, and plots waveforms plus direction over time with summary stats.
+- Live detection (live_detection.py): Streams audio in real time with a rolling buffer and PyQtGraph UI, showing waveforms, ILD, and threshold-based left/center/right direction.
 
 ---
 
