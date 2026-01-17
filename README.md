@@ -12,6 +12,8 @@ In biological audition, when a sound reaches one ear a bit earlier than the othe
 
 Another reliable cue is Interaural Level Difference (ILD): the ear closer to a sound usually receives a stronger (louder) signal because the head attenuates sound on the far side. By comparing the relative energy between the two channels, the system can infer direction even when microsecond timing differences are unreliable.
 
+![ILD](https://github.com/OmarAshour-exe/sound-localization/blob/master/assets/ILD.png)
+
 The sound itself is turned into short “on” and “off” spikes: one group of neurons fires when the sound level goes up, another when it goes down. By adding up these spikes with simple filters, the brain—or a neuromorphic model—can reconstruct a smooth version of the original signal, while still enjoying the robustness and efficiency of spike-based processing.
 
 ![On And Off spikes](https://github.com/OmarAshour-exe/sound-localization/blob/master/assets/On_Off_spikes.png)
